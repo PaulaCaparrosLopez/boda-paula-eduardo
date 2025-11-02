@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boda Paula y Eduardo — Halloween</title>
+  <meta name="description" content="boda web" />
+  <style>
+    :root {
+      --accent: #ff6a00; /* naranja */
+      --accent-2: #ffb703; /* dorado cálido */
+      --text: #f6f3ff;
+      --muted: #c7b8ff;
+      --card: rgba(255,255,255,0.06);
+      --border: rgba(255,255,255,0.12);
+      --shadow: 0 10px 30px rgba(0,0,0,0.45);
+      background: #2b1149; /* morado */;
+    }
+
+    /* Global */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+    margin: 0;
+    color: var(--text);
+    font-family: system-ui, sans-serif;
+    background: radial-gradient(1200px 800px at 70% -10%, #532a7c 0%, var(--bg2) 35%, var(--bg1) 70%);
+    overflow-x: hidden;
+    }
+
+    a { color: var(--accent-2); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Sticky nav */
+    header.navbar {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(6px);
+      background: linear-gradient( to bottom, rgba(26,16,38,0.85), rgba(26,16,38,0.35) );
+      border-bottom: 1px solid var(--border);
+    }
+    .navwrap { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 16px; padding: 12px 20px; }
+    .brand { font-weight: 800; letter-spacing: .5px; }
+    .brand span { color: var(--accent); }
+    nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 10px 18px; margin: 0 0 0 auto; padding: 0; }
+    nav a { padding: 8px 10px; border-radius: 999px; border: 1px solid transparent; }
+    nav a:hover { border-color: var(--border); background: rgba(255,255,255,0.04); }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      padding: 120px 20px 80px;
+      text-align: center;
+      overflow: hidden;
+    }
+    .hero h1 {
+      font-size: clamp(38px, 6vw, 72px);
+      margin: 0 0 10px;
+      line-height: 1.02;
+      text-shadow: 0 2px 0 rgba(0,0,0,.25), 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .hero p { margin: 0 auto; max-width: 700px; color: var(--muted); font-size: clamp(16px, 2.2vw, 20px); }
+
+    /* Floating Halloween confetti (pumpkins & skulls) */
+    .floaters { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .floater { position: absolute; font-size: 26px; opacity: .7; filter: drop-shadow(0 6px 10px rgba(0,0,0,.35)); animation: drift var(--dur) linear infinite; }
+    @keyframes drift {
+    0% { transform: translateY(120%) rotate(0deg); opacity: 1; }
+    80% { opacity: 1; }
+    100% { transform: translateY(-150%) rotate(360deg); opacity: 0; }
+    }
+
+    /* Lightning flashes */
+    .lightning {
+      position: absolute; inset: -10vh -10vw; pointer-events: none; z-index: 2;
+      background: linear-gradient(transparent, rgba(255,255,255,0.2), transparent);
+      mix-blend-mode: screen; opacity: 0; animation: thunder 12s infinite;
+    }
+    .lightning:nth-child(2){ animation-delay: 4s; }
+    .lightning:nth-child(3){ animation-delay: 8s; }
+    @keyframes thunder {
+      0%, 96%, 100% { opacity: 0; }
+      2% { opacity: .9; }
+      3% { opacity: 0; }
+      4% { opacity: .6; }
+      5% { opacity: 0; }
+    }
+
+    /* Section styling */
+    section { padding: 64px 20px; position: relative; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow); overflow: hidden; }
+    .card.pad { padding: 24px; }
+    h2 { font-size: clamp(26px, 3.6vw, 36px); margin: 0 0 18px; letter-spacing: .5px; }
+    .tag { display: inline-block; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: 12px; color: #201; background: linear-gradient(90deg, var(--accent), #a82fff); padding: 6px 10px; border-radius: 999px; margin-bottom: 14px; }
+
+    /* Countdown */
+    .countdown { display: grid; grid-template-columns: repeat(4, minmax(90px,1fr)); gap: 14px; }
+    .timebox { background: rgba(0,0,0,.25); border: 1px solid var(--border); border-radius: 14px; padding: 16px; text-align: center; }
+    .timebox .num { font-size: clamp(28px, 5vw, 44px); font-weight: 800; color: var(--accent); }
+    .timebox .label { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+
+    /* Responsive embeds */
+    .embed { position: relative; width: 100%; padding-top: 56.25%; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); background: #000; }
+    .embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+    /* Venue */
+    .grid { display: grid; gap: 18px; }
+    .grid-2 { grid-template-columns: 1fr 1fr; }
+
+    /* Bank */
+    .iban { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .iban code { background: rgba(255,255,255,.06); border: 1px solid var(--border); padding: 10px 12px; border-radius: 10px; font-weight: 700; letter-spacing: .06em; }
+    .btn { cursor: pointer; border: 1px solid var(--border); background: linear-gradient(90deg, #a82fff33, #ff6a0033); color: var(--text); padding: 10px 14px; border-radius: 999px; transition: transform .08s ease, background .2s ease; }
+    .btn:hover { transform: translateY(-1px); }
+
+    /* Gallery */
+    .gallery { display: grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: 12px; }
+    .gallery img { width: 100%; height: 220px; object-fit: cover; border-radius: 14px; border: 1px solid var(--border); filter: saturate(1.2) contrast(1.05); transition: transform .25s ease; }
+    .gallery img:hover { transform: translateY(-4px) rotate(-1deg); }
+
+    /* FAQ */
+    details { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+    details + details { margin-top: 10px; }
+    summary { cursor: pointer; font-weight: 700; }
+
+    /* Hotels */
+    .hotel { display: grid; grid-template-columns: 110px 1fr; gap: 14px; align-items: center; background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 12px; }
+    .hotel img { width: 110px; height: 80px; object-fit: cover; border-radius: 10px; border: 1px solid var(--border); }
+
+    /* Footer */
+    footer { text-align: center; color: var(--muted); padding: 60px 20px 80px; }
+
+    /* Section dividers flair */
+    .divider { height: 18px; margin: 40px 0; background: repeating-linear-gradient(135deg, transparent 0 10px, rgba(255,255,255,0.06) 10px 20px), linear-gradient(90deg, #a82fff44, #ff6a0044); border-radius: 999px; }
+
+    /* Mobile tweaks */
+    @media (max-width: 800px){
+      .grid-2 { grid-template-columns: 1fr; }
+      .countdown { grid-template-columns: repeat(2, minmax(120px,1fr)); }
+    }
+
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="navwrap">
+      <div class="brand">💍 <a href="#titulo"></a><span>Boda</span> Paula & Eduardo 💍</a></div>
+      <nav aria-label="Navegación">
+        <ul>
+          <li><a href="#cuenta-atras">Cuenta atrás</a></li>
+          <li><a href="#video">Video</a></li>
+          <li><a href="#lugar">Lugar</a></li>
+          <li><a href="#masinfo">Más información</a></li>
+
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO / Título -->
+  <section id="titulo" class="hero">
+    <div class="lightning"></div>
+    <div class="lightning"></div>
+    <div class="lightning"></div>
+    <div class="floaters" aria-hidden="true" id="floaters"></div>
+
+    <h1>🎃 Boda Paula y Eduardo 🎃</h1>
+    <p>Sí has recibido este enlace... ¡Estás invitado a nuestra boda! ¡Os esperamos el <strong>31 de octubre de 2026</strong> para disfrutar todo el día!</p>
+  </section>
+
+  <div class="divider" aria-hidden="true"></div>
+
+  <!-- 2. Cuenta atrás -->
+  <section id="cuenta-atras">
+    <div class="container">
+      <span class="tag">Cuenta atrás</span>
+      <h2>¡Queda muy poco! ⏳</h2>
+      <div class="card pad">
+        <div class="countdown" id="countdown" aria-live="polite">
+          <div class="timebox"><div class="num" id="d">0</div><div class="label">Días</div></div>
+          <div class="timebox"><div class="num" id="h">0</div><div class="label">Horas</div></div>
+          <div class="timebox"><div class="num" id="m">0</div><div class="label">Minutos</div></div>
+          <div class="timebox"><div class="num" id="s">0</div><div class="label">Segundos</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true"></div>
+
+  <!-- 3. Video YouTube -->
+  <section id="video">
+    <div class="container">
+      <span class="tag">SAVE THE DATE</span>
+      <h2>🎵 Guardad la fecha</h2>
+      <div class="embed card">
+        <iframe src="https://www.youtube.com/embed/YOUTUBE_VIDEO_ID" title="This is Halloween" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true"></div>
+
+  <!-- 4. Lugar de la celebración -->
+  <section id="lugar">
+    <div class="container">
+      <span class="tag">Lugar</span>
+      <h2>📍 Lugar de la celebración</h2>
+      <div class="grid grid-2">
+        <div class="card pad">
+          <h3 style="margin-top:0">Restaurante Molina Real Celebraciones</h3>
+          <p><strong>Dirección: </strong><br/>C. Amsterdam, 2, 30509 Molina de Segura, Murcia</p>
+          <p>Hora de ceremonia civil: <strong>12:00</strong></p>
+          <p>Hora de comienzo del cocktail: <strong>seguido de la ceremonia civil</strong> (se realiza en el mismo lugar que la ceremonia)</p>
+          <p>
+            <a class="btn" href="https://www.google.com/maps/place/C.+Amsterdam,+2,+30509+Molina+de+Segura,+Murcia" target="_blank" rel="noopener">
+              Abrir en Google Maps
+            </a>
+          </p>
+        </div>
+        <div class="embed card">
+          <!-- Sustituye el src por tu mapa embebido de Google Maps -->
+          <iframe 
+            title="Mapa del lugar"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12619.087915524165!2d-1.2135548!3d38.0540515!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd6381e46ab8d16f%3A0x7e52edb73352ac86!2sC.%20Amsterdam%2C%202%2C%2030509%20Molina%20de%20Segura%2C%20Murcia!5e0!3m2!1ses!2ses!4v1730568289000!5m2!1ses!2ses" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true"></div>
+
+    <section id="masinfo">
+    <div class="container">
+      <span class="tag">Más información</span>
+      <h2>Próximamente...</h2>
+        <div class="card pad">
+          <h3 style="margin-top:0">Os iremos informando de más cosas a tener en cuenta cuando tengamos confirmaciones (alojamiento, desplazamiento, horarios)</h3>
+          <p> ¡Que nervios! ¡y que guay!</p>
+        </div>
+    </div>
+  </section>
+
+  <footer>
+    Hecho con 🧡💜 por Paula & Eduardo · 31/10/2026
+  </footer>
+
+  <script>
+    // Smooth scroll (for browsers that need it)
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href');
+        const el = document.querySelector(id);
+        if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      });
+    });
+
+    // Countdown to Oct 31, 2026 00:00 local time (Spain timezone will be used by the browser)
+    const target = new Date(2026, 9, 31, 0, 0, 0); // month is 0-based -> 9 = October
+    const $d = document.getElementById('d');
+    const $h = document.getElementById('h');
+    const $m = document.getElementById('m');
+    const $s = document.getElementById('s');
+
+    function updateCountdown(){
+      const now = new Date();
+      let diff = target - now;
+      if (diff < 0) diff = 0;
+      const sec = Math.floor(diff / 1000) % 60;
+      const min = Math.floor(diff / (1000*60)) % 60;
+      const hrs = Math.floor(diff / (1000*60*60)) % 24;
+      const days = Math.floor(diff / (1000*60*60*24));
+      $d.textContent = String(days);
+      $h.textContent = String(hrs).padStart(2,'0');
+      $m.textContent = String(min).padStart(2,'0');
+      $s.textContent = String(sec).padStart(2,'0');
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    // Copy IBAN
+    document.getElementById('copyIban').addEventListener('click', async () => {
+      const txt = document.getElementById('iban').textContent.replace(/\s+/g,' ').trim();
+      try { await navigator.clipboard.writeText(txt); 
+        const b = document.getElementById('copyIban');
+        b.textContent = '¡Copiado!';
+        setTimeout(() => b.textContent = 'Copiar', 1600);
+      } catch(e) { alert('No se pudo copiar. Copia manualmente, por favor.'); }
+    });
+
+    // Generate floating pumpkins & skulls
+    const emojis = ['🎃','💀','🕸️','🦇','🕯️'];
+    const floaters = document.getElementById('floaters');
+    for (let i=0;i<40;i++){
+      const span = document.createElement('span');
+      span.className = 'floater';
+      span.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      span.style.left = Math.random()*100 + 'vw';
+      span.style.bottom = '-40px';
+      span.style.setProperty('--dur', (4 + Math.random()*4) + 's'); // rápido
+      span.style.fontSize = (20 + Math.random()*26) + 'px';
+      span.style.opacity = (0.5 + Math.random()*0.5).toFixed(2);
+      floaters.appendChild(span);
+    }
+  </script>
+</body>
+</html>
