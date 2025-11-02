@@ -101,7 +101,21 @@
 
     /* Responsive embeds */
     .embed { position: relative; width: 100%; padding-top: 56.25%; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); background: #000; }
-    .embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .embedGoogle { position: relative; width: 100%; padding-top: 56.25%; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); background: #000; }
+    .embedGoogle iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    
+    .embed.natural { 
+      padding-top: 0;                 /* no forzar 16:9 */
+      background: #000;
+    }
+    .embed.natural video {
+      position: static;               /* no posicionarlo absoluto */
+      width: 100%;
+      height: auto;                   /* respeta la altura original */
+      object-fit: contain;            /* sin recortar */
+      display: block;
+      max-height: 70vh;               /* opcional: limitar altura para no ocupar toda la pantalla */
+    }
 
     /* Venue */
     .grid { display: grid; gap: 18px; }
@@ -193,8 +207,10 @@
     <div class="container">
       <span class="tag">SAVE THE DATE</span>
       <h2>🎵 Guardad la fecha</h2>
-      <div class="embed card">
-        <iframe src="https://www.youtube.com/embed/YOUTUBE_VIDEO_ID" title="This is Halloween" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      <div class="embed card natural">
+        <video id="saveTheDate" controls preload="metadata" playsinline poster="poster.jpg">
+  <source src="SaveTheDatePyE.mp4" type="video/mp4" />
+</video>
       </div>
     </div>
   </section>
@@ -218,7 +234,7 @@
             </a>
           </p>
         </div>
-        <div class="embed card">
+        <div class="embedGoogle card">
           <!-- Sustituye el src por tu mapa embebido de Google Maps -->
           <iframe 
             title="Mapa del lugar"
@@ -282,14 +298,14 @@
     setInterval(updateCountdown, 1000);
 
     // Copy IBAN
-    document.getElementById('copyIban').addEventListener('click', async () => {
+    /*document.getElementById('copyIban').addEventListener('click', async () => {
       const txt = document.getElementById('iban').textContent.replace(/\s+/g,' ').trim();
       try { await navigator.clipboard.writeText(txt); 
         const b = document.getElementById('copyIban');
         b.textContent = '¡Copiado!';
         setTimeout(() => b.textContent = 'Copiar', 1600);
       } catch(e) { alert('No se pudo copiar. Copia manualmente, por favor.'); }
-    });
+    });*/
 
     // Generate floating pumpkins & skulls
     const emojis = ['🎃','💀','🕸️','🦇','🕯️'];
