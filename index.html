@@ -7,25 +7,24 @@
   <meta name="description" content="boda web" />
   <style>
     :root {
-      --accent: #ff6a00; /* naranja */
-      --accent-2: #ffb703; /* dorado cálido */
+      --accent: #ff6a00;
+      --accent-2: #ffb703;
       --text: #f6f3ff;
       --muted: #c7b8ff;
       --card: rgba(255,255,255,0.06);
       --border: rgba(255,255,255,0.12);
       --shadow: 0 10px 30px rgba(0,0,0,0.45);
-      background: #2b1149; /* morado */;
+      background: #2b1149;
     }
 
-    /* Global */
     * { box-sizing: border-box; }
     html, body { height: 100%; }
     body {
-    margin: 0;
-    color: var(--text);
-    font-family: system-ui, sans-serif;
-    background: radial-gradient(1200px 800px at 70% -10%, #532a7c 0%, var(--bg2) 35%, var(--bg1) 70%);
-    overflow-x: hidden;
+      margin: 0;
+      color: var(--text);
+      font-family: system-ui, sans-serif;
+      background: radial-gradient(1200px 800px at 70% -10%, #532a7c 0%, var(--bg2) 35%, var(--bg1) 70%);
+      overflow-x: hidden;
     }
 
     a { color: var(--accent-2); text-decoration: none; }
@@ -35,15 +34,35 @@
     header.navbar {
       position: sticky; top: 0; z-index: 50;
       backdrop-filter: blur(6px);
-      background: linear-gradient( to bottom, rgba(26,16,38,0.85), rgba(26,16,38,0.35) );
+      background: linear-gradient(to bottom, rgba(26,16,38,0.85), rgba(26,16,38,0.35));
       border-bottom: 1px solid var(--border);
     }
     .navwrap { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 16px; padding: 12px 20px; }
-    .brand { font-weight: 800; letter-spacing: .5px; }
+    .brand { font-weight: 800; letter-spacing: .5px; white-space: nowrap; }
     .brand span { color: var(--accent); }
     nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 10px 18px; margin: 0 0 0 auto; padding: 0; }
     nav a { padding: 8px 10px; border-radius: 999px; border: 1px solid transparent; }
     nav a:hover { border-color: var(--border); background: rgba(255,255,255,0.04); }
+
+    /* Language switcher */
+    .lang-switcher { display: flex; gap: 6px; margin-left: 8px; }
+    .lang-btn {
+      padding: 5px 11px; border-radius: 999px;
+      border: 1px solid var(--border);
+      font-size: 12px; font-weight: 700;
+      color: var(--muted); cursor: pointer;
+      text-decoration: none !important;
+      transition: all .2s;
+    }
+    .lang-btn.active {
+      background: linear-gradient(90deg,#a82fff44,#ff6a0044);
+      color: var(--text);
+      border-color: var(--accent);
+    }
+    .lang-btn:hover:not(.active) {
+      background: rgba(255,255,255,0.07);
+      color: var(--text);
+    }
 
     /* Hero */
     .hero {
@@ -60,13 +79,13 @@
     }
     .hero p { margin: 0 auto; max-width: 700px; color: var(--muted); font-size: clamp(16px, 2.2vw, 20px); }
 
-    /* Floating Halloween confetti (pumpkins & skulls) */
+    /* Floating Halloween confetti */
     .floaters { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
     .floater { position: absolute; font-size: 26px; opacity: .7; filter: drop-shadow(0 6px 10px rgba(0,0,0,.35)); animation: drift var(--dur) linear infinite; }
     @keyframes drift {
-    0% { transform: translateY(120%) rotate(0deg); opacity: 1; }
-    80% { opacity: 1; }
-    100% { transform: translateY(-150%) rotate(360deg); opacity: 0; }
+      0% { transform: translateY(120%) rotate(0deg); opacity: 1; }
+      80% { opacity: 1; }
+      100% { transform: translateY(-150%) rotate(360deg); opacity: 0; }
     }
 
     /* Lightning flashes */
@@ -103,19 +122,8 @@
     .embed { position: relative; width: 100%; padding-top: 56.25%; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); background: #000; }
     .embedGoogle { position: relative; width: 100%; padding-top: 56.25%; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); background: #000; }
     .embedGoogle iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-    
-    .embed.natural { 
-      padding-top: 0;                 /* no forzar 16:9 */
-      background: #000;
-    }
-    .embed.natural video {
-      position: static;               /* no posicionarlo absoluto */
-      width: 100%;
-      height: auto;                   /* respeta la altura original */
-      object-fit: contain;            /* sin recortar */
-      display: block;
-      max-height: 70vh;               /* opcional: limitar altura para no ocupar toda la pantalla */
-    }
+    .embed.natural { padding-top: 0; background: #000; }
+    .embed.natural video { position: static; width: 100%; height: auto; object-fit: contain; display: block; max-height: 70vh; }
 
     /* Venue */
     .grid { display: grid; gap: 18px; }
@@ -144,41 +152,100 @@
     /* Footer */
     footer { text-align: center; color: var(--muted); padding: 60px 20px 80px; }
 
-    /* Section dividers flair */
+    /* Section dividers */
     .divider { height: 18px; margin: 40px 0; background: repeating-linear-gradient(135deg, transparent 0 10px, rgba(255,255,255,0.06) 10px 20px), linear-gradient(90deg, #a82fff44, #ff6a0044); border-radius: 999px; }
 
     /* Mobile tweaks */
     @media (max-width: 800px){
       .grid-2 { grid-template-columns: 1fr; }
       .countdown { grid-template-columns: repeat(2, minmax(120px,1fr)); }
+      nav ul { gap: 6px 12px; }
+      .lang-switcher { margin-left: 4px; }
     }
 
+    .gift-iban {
+      margin: 28px auto;
+      max-width: 700px;
+      padding: 28px 20px;
+      border-radius: 20px;
+      border: 2px solid var(--accent);
+      background: linear-gradient(
+        135deg,
+        rgba(255,106,0,0.15),
+        rgba(168,47,255,0.15)
+      );
+      box-shadow: 0 0 30px rgba(255,106,0,0.2);
+    }
+
+    .gift-iban-label {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: .15em;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .gift-iban-number {
+      display: block;
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      line-height: 1.5;
+      color: var(--text);
+      word-break: break-word;
+      margin-bottom: 24px;
+    }
+
+    .gift-copy {
+      min-width: 180px;
+    }
+
+    @media (max-width: 600px) {
+      .gift-iban-number {
+        font-size: 19px;
+        letter-spacing: .08em;
+      }
+    }
   </style>
 </head>
 <body>
+
   <header class="navbar">
     <div class="navwrap">
-      <div class="brand">💍 <a href="#titulo"></a><span>Boda</span> Paula & Eduardo 💍</a></div>
+      <div class="brand">💍 <span>Boda</span> Paula &amp; Eduardo 💍</div>
       <nav aria-label="Navegación">
         <ul>
-          <li><a href="#cuenta-atras">Cuenta atrás</a></li>
-          <li><a href="#video">Video</a></li>
-          <li><a href="#lugar">Lugar</a></li>
-          <li><a href="#hotel">Hotel</a></li>
-          <li><a href="#formulario">Formulario</a></li>
-		  <li><a href="#spotify">Spotify</a></li>
-          <li><a href="#masinfo">Más información</a></li>
-
+          <li><a href="#cuenta-atras" data-i18n="nav-countdown">Cuenta atrás</a></li>
+          <li><a href="#video"        data-i18n="nav-video">Video</a></li>
+          <li><a href="#regalo" data-i18n="nav-gift">Cuenta Regalo</a></li>
+          <li><a href="#lugar"        data-i18n="nav-venue">Lugar</a></li>
+          <li><a href="#hotel"        data-i18n="nav-hotel">Hotel</a></li>
+          <li><a href="#formulario"   data-i18n="nav-form">Formulario</a></li>
+          <li><a href="#spotify"      data-i18n="nav-spotify">Spotify</a></li>
+          <li><a href="#masinfo"      data-i18n="nav-more">Más info</a></li>
         </ul>
       </nav>
+      <div class="lang-switcher">
+        <a href="?lang=es"
+          class="lang-btn"
+          onclick="switchLang(event,'es')">
+          🇪🇸 ES
+        </a>
+
+        <a href="?lang=en"
+          class="lang-btn"
+          onclick="switchLang(event,'en')">
+          🇬🇧 EN
+        </a>
+      </div>
     </div>
   </header>
 
-    <!-- 3. Video YouTube -->
+  <!-- Video / Save the Date -->
   <section id="video">
     <div class="container">
-      <span class="tag">SAVE THE DATE</span>
-      <h2>🎵 Guardad la fecha</h2>
+      <span class="tag" data-i18n="video-tag">SAVE THE DATE</span>
+      <h2 data-i18n="video-h2">🎵 Guardad la fecha</h2>
       <div class="embed card natural">
         <video id="saveTheDate" controls preload="metadata" playsinline poster="poster.jpg">
           <source src="SaveTheDatePyE.mp4" type="video/mp4" />
@@ -187,30 +254,29 @@
     </div>
   </section>
 
-  <!-- HERO / Título -->
+  <!-- Hero -->
   <section id="titulo" class="hero">
     <div class="lightning"></div>
     <div class="lightning"></div>
     <div class="lightning"></div>
     <div class="floaters" aria-hidden="true" id="floaters"></div>
-
-    <h1>🎃 Boda Paula y Eduardo 🎃</h1>
-    <p>Si has recibido este enlace... ¡Estás invitado a nuestra boda! ¡Os esperamos el <strong>31 de octubre de 2026</strong> para disfrutar todo el día!</p>
+    <h1 data-i18n="hero-h1">🎃 Boda Paula y Eduardo 🎃</h1>
+    <p data-i18n="hero-p">Si has recibido este enlace... ¡Estás invitado a nuestra boda! ¡Os esperamos el <strong>31 de octubre de 2026</strong> para disfrutar todo el día!</p>
   </section>
 
   <div class="divider" aria-hidden="true"></div>
 
-  <!-- 2. Cuenta atrás -->
+  <!-- Cuenta atrás -->
   <section id="cuenta-atras">
     <div class="container">
-      <span class="tag">Cuenta atrás</span>
-      <h2>¡Queda muy poco! ⏳</h2>
+      <span class="tag" data-i18n="countdown-tag">Cuenta atrás</span>
+      <h2 data-i18n="countdown-h2">¡Queda muy poco! ⏳</h2>
       <div class="card pad">
         <div class="countdown" id="countdown" aria-live="polite">
-          <div class="timebox"><div class="num" id="d">0</div><div class="label">Días</div></div>
-          <div class="timebox"><div class="num" id="h">0</div><div class="label">Horas</div></div>
-          <div class="timebox"><div class="num" id="m">0</div><div class="label">Minutos</div></div>
-          <div class="timebox"><div class="num" id="s">0</div><div class="label">Segundos</div></div>
+          <div class="timebox"><div class="num" id="d">0</div><div class="label" data-i18n="countdown-days">Días</div></div>
+          <div class="timebox"><div class="num" id="h">0</div><div class="label" data-i18n="countdown-hours">Horas</div></div>
+          <div class="timebox"><div class="num" id="m">0</div><div class="label" data-i18n="countdown-minutes">Minutos</div></div>
+          <div class="timebox"><div class="num" id="s">0</div><div class="label" data-i18n="countdown-seconds">Segundos</div></div>
         </div>
       </div>
     </div>
@@ -218,29 +284,79 @@
 
   <div class="divider" aria-hidden="true"></div>
 
-  <!-- 4. Lugar de la celebración -->
+  <!-- Regalos -->
+<section id="regalo">
+  <div class="container">
+    <span class="tag" data-i18n="gift-tag">
+      Cuenta regalo
+    </span>
+
+    <h2 data-i18n="gift-h2">
+      🎁 Nuestra cuenta regalo
+    </h2>
+
+    <div class="card pad" style="text-align:center;">
+      <p
+        style="max-width:700px;margin:0 auto 24px;color:var(--muted);"
+        data-i18n="gift-text">
+        Vuestra compañía es el mejor regalo, pero si queréis ayudarnos
+        en esta nueva etapa, podéis hacerlo aquí.
+      </p>
+
+      <div class="gift-iban">
+        <div
+          class="gift-iban-label"
+          data-i18n="gift-iban-label">
+          IBAN
+        </div>
+
+        <span
+          id="iban"
+          class="gift-iban-number">
+          ES68 0049 0120 9528 1005 8808
+        </span>
+
+        <button
+          id="copyIban"
+          class="btn gift-copy"
+          data-i18n="gift-copy">
+          Copiar IBAN
+        </button>
+      </div>
+
+      <p style="font-size:14px;color:var(--muted);"
+         data-i18n="gift-thanks">
+        Muchas gracias por formar parte de nuestro día.
+      </p>
+    </div>
+  </div>
+</section>
+
+<div class="divider" aria-hidden="true"></div>
+
+  <!-- Lugar -->
   <section id="lugar">
     <div class="container">
-      <span class="tag">Lugar</span>
-      <h2>📍 Lugar de la celebración</h2>
+      <span class="tag" data-i18n="venue-tag">Lugar</span>
+      <h2 data-i18n="venue-h2">📍 Lugar de la celebración</h2>
       <div class="grid grid-2">
         <div class="card pad">
-          <h3 style="margin-top:0">Restaurante Molina Real Celebraciones</h3>
-          <p><strong>Dirección: </strong><br/>C. Amsterdam, 2, 30509 Molina de Segura, Murcia</p>
-          <p>Hora de ceremonia civil: <strong>12:00</strong></p>
-          <p>Hora de comienzo del cocktail: <strong>seguido de la ceremonia civil</strong> (se realiza en el mismo lugar que la ceremonia)</p>
+          <h3 style="margin-top:0" data-i18n="venue-h3">Restaurante Molina Real Celebraciones</h3>
+          <p data-i18n="venue-address"><strong>Dirección: </strong><br/>C. Amsterdam, 2, 30509 Molina de Segura, Murcia</p>
+          <p data-i18n="venue-ceremony">Hora de ceremonia civil: <strong>12:00</strong></p>
+          <p data-i18n="venue-cocktail">Hora de comienzo del cocktail: <strong>seguido de la ceremonia civil</strong> (se realiza en el mismo lugar que la ceremonia)</p>
           <p>
-            <a class="btn" href="https://www.google.com/maps/place/C.+Amsterdam,+2,+30509+Molina+de+Segura,+Murcia" target="_blank" rel="noopener">
+            <a class="btn" href="https://www.google.com/maps/place/C.+Amsterdam,+2,+30509+Molina+de+Segura,+Murcia" target="_blank" rel="noopener" data-i18n="venue-maps-btn">
               Abrir en Google Maps
             </a>
           </p>
         </div>
         <div class="embedGoogle card">
-          <!-- Sustituye el src por tu mapa embebido de Google Maps -->
-          <iframe 
+          <iframe
+            id="venue-map"
             title="Mapa del lugar"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12619.087915524165!2d-1.2135548!3d38.0540515!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd6381e46ab8d16f%3A0x7e52edb73352ac86!2sC.%20Amsterdam%2C%202%2C%2030509%20Molina%20de%20Segura%2C%20Murcia!5e0!3m2!1ses!2ses!4v1730568289000!5m2!1ses!2ses" 
-            loading="lazy" 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12619.087915524165!2d-1.2135548!3d38.0540515!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd6381e46ab8d16f%3A0x7e52edb73352ac86!2sC.%20Amsterdam%2C%202%2C%2030509%20Molina%20de%20Segura%2C%20Murcia!5e0!3m2!1ses!2ses!4v1730568289000!5m2!1ses!2ses"
+            loading="lazy"
             referrerpolicy="no-referrer-when-downgrade">
           </iframe>
         </div>
@@ -250,93 +366,272 @@
 
   <div class="divider" aria-hidden="true"></div>
 
-<!-- Hotel -->
-<section id="hotel">
-  <div class="container">
-    <span class="tag">Alojamiento</span>
-    <h2>🏨 Hotel recomendado</h2>
-    <div class="grid grid-2">
-      <div class="card pad">
-        <h3 style="margin-top:0">Hotel El Churra — Murcia</h3>
-        <p>Hemos negociado condiciones especiales para los invitados:</p>
-        <ul style="line-height:2; padding-left:20px; color:var(--muted);">
-          <li>🛏️ <strong style="color:var(--text)">65 €/noche</strong> — habitación doble</li>
-          <li>☕ <strong style="color:var(--text)">+8 €/noche/persona</strong> — desayuno buffet incluido</li>
-          <li>🅿️ <strong style="color:var(--text)">+19 €/noche</strong> — parking (si necesitáis)</li>
-        </ul>
-        <p style="color:var(--muted); font-size:14px;">Lo gestionamos nosotros con el hotel, escribidnos a nuestros wassaps.</p>
-        <a class="btn" href="https://maps.app.goo.gl/8CHGqU5hwsXoAdL89" target="_blank" rel="noopener">
-          📍 Ver en Google Maps
-        </a>
-      </div>
-      <div class="card" style="overflow:hidden; min-height:260px;">
-        <img
-          src="hotel_churra.jpg"
-          alt="Habitación Hotel El Churra"
-          style="width:100%; height:100%; object-fit:cover; display:block; min-height:260px;"
-        />
+  <!-- Hotel -->
+  <section id="hotel">
+    <div class="container">
+      <span class="tag" data-i18n="hotel-tag">Alojamiento</span>
+      <h2 data-i18n="hotel-h2">🏨 Hotel recomendado</h2>
+      <div class="grid grid-2">
+        <div class="card pad">
+          <h3 style="margin-top:0" data-i18n="hotel-h3">Hotel El Churra — Murcia</h3>
+          <p data-i18n="hotel-intro">Hemos negociado condiciones especiales para los invitados:</p>
+          <ul style="line-height:2; padding-left:20px; color:var(--muted);">
+            <li data-i18n="hotel-room">🛏️ <strong style="color:var(--text)">65 €/noche</strong> — habitación doble</li>
+            <li data-i18n="hotel-breakfast">☕ <strong style="color:var(--text)">+8 €/noche/persona</strong> — desayuno buffet incluido</li>
+            <li data-i18n="hotel-parking">🅿️ <strong style="color:var(--text)">+19 €/noche</strong> — parking (si necesitáis)</li>
+          </ul>
+          <p style="color:var(--muted); font-size:14px;" data-i18n="hotel-note">Lo gestionamos nosotros con el hotel, escribidnos a nuestros wassaps.</p>
+          <a class="btn" href="https://maps.app.goo.gl/8CHGqU5hwsXoAdL89" target="_blank" rel="noopener" data-i18n="hotel-maps-btn">
+            📍 Ver en Google Maps
+          </a>
+        </div>
+        <div class="card" style="overflow:hidden; min-height:260px;">
+          <img
+            src="hotel_churra.jpg"
+            alt="Habitación Hotel El Churra"
+            style="width:100%; height:100%; object-fit:cover; display:block; min-height:260px;"
+          />
+        </div>
       </div>
     </div>
-  </div>
-</section>
-
-<div class="divider" aria-hidden="true"></div>
-
-<!-- Formulario -->
-<section id="formulario">
-  <div class="container">
-    <span class="tag">Confirmación</span>
-    <h2>📋 Cuéntanos tus planes</h2>
-    <div class="card pad" style="text-align:center;">
-      <p style="color:var(--muted); max-width:600px; margin:0 auto 24px;">
-        Rellena el formulario para confirmarnos asistencia, si necesitáis alojamiento, transporte y cualquier otra cosa que necesitemos saber.
-      </p>
-      <a
-        class="btn"
-        href="https://forms.gle/yk8b9EVXYc5zDg6T9"
-        target="_blank"
-        rel="noopener"
-        style="font-size:16px; padding:14px 28px; background:linear-gradient(90deg,#a82fff66,#ff6a0066);"
-      >
-        ✍️ Rellenar formulario
-      </a>
-    </div>
-  </div>
-</section>
+  </section>
 
   <div class="divider" aria-hidden="true"></div>
-<!-- Spotify -->
-<section id="spotify">
-  <div class="container">
-    <span class="tag">Música</span>
-    <h2>🎵 ¡Pon tu canción!</h2>
-    <div class="card pad" style="text-align:center;">
-      <p style="color:var(--muted); max-width:600px; margin:0 auto 16px;">
-        ¿Te apetece hacer una lista con nosotros? ¡Entra y añade las canciones que no pueden faltar en nuestra boda!
-      </p>
-      <p style="font-size:18px; margin:0 auto 24px;"><strong>🎧 Bodorrio PyE — 31/10/26</strong></p>
-      <a class="btn" href="https://open.spotify.com/playlist/62N9szZRiJFaMqWHPYdVGv?si=GTXh-dIjSViR4yM9KhaAtw&pt=8015896b0b613f2ec3a2074d96be7ffb&pi=HRy9yeJhSw2lh" target="_blank" rel="noopener" style="font-size:16px; padding:14px 28px; background:linear-gradient(90deg,#1db95466,#a82fff66);">🎵 Abrir lista en Spotify</a>
-    </div>
-  </div>
-</section>
 
-    <section id="masinfo">
+  <!-- Formulario / RSVP -->
+  <section id="formulario">
     <div class="container">
-      <span class="tag">Más información</span>
-      <h2>Próximamente...</h2>
-        <div class="card pad">
-          <h3 style="margin-top:0">Os iremos informando de más cosas a tener en cuenta cuando tengamos confirmaciones (alojamiento, desplazamiento, horarios)</h3>
-          <p> ¡Que nervios! ¡y que guay!</p>
-        </div>
+      <span class="tag" data-i18n="form-tag">Confirmación</span>
+      <h2 data-i18n="form-h2">📋 Cuéntanos tus planes</h2>
+      <div class="card pad" style="text-align:center;">
+        <p style="color:var(--muted); max-width:600px; margin:0 auto 24px;" data-i18n="form-desc">
+          Rellena el formulario para confirmarnos asistencia, si necesitáis alojamiento, transporte y cualquier otra cosa que necesitemos saber.
+        </p>
+        <a
+          class="btn"
+          href="https://forms.gle/yk8b9EVXYc5zDg6T9"
+          target="_blank"
+          rel="noopener"
+          style="font-size:16px; padding:14px 28px; background:linear-gradient(90deg,#a82fff66,#ff6a0066);"
+          data-i18n="form-btn"
+        >
+          ✍️ Rellenar formulario
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true"></div>
+
+  <!-- Spotify -->
+  <section id="spotify">
+    <div class="container">
+      <span class="tag" data-i18n="spotify-tag">Música</span>
+      <h2 data-i18n="spotify-h2">🎵 ¡Pon tu canción!</h2>
+      <div class="card pad" style="text-align:center;">
+        <p style="color:var(--muted); max-width:600px; margin:0 auto 16px;" data-i18n="spotify-desc">
+          ¿Te apetece hacer una lista con nosotros? ¡Entra y añade las canciones que no pueden faltar en nuestra boda!
+        </p>
+        <p style="font-size:18px; margin:0 auto 24px;"><strong data-i18n="spotify-title">🎧 Bodorrio PyE — 31/10/26</strong></p>
+        <a class="btn" href="https://open.spotify.com/playlist/62N9szZRiJFaMqWHPYdVGv?si=GTXh-dIjSViR4yM9KhaAtw&pt=8015896b0b613f2ec3a2074d96be7ffb&pi=HRy9yeJhSw2lh" target="_blank" rel="noopener" style="font-size:16px; padding:14px 28px; background:linear-gradient(90deg,#1db95466,#a82fff66);" data-i18n="spotify-btn">🎵 Abrir lista en Spotify</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Más información -->
+  <section id="masinfo">
+    <div class="container">
+      <span class="tag" data-i18n="more-tag">Más info</span>
+      <h2 data-i18n="more-h2">Próximamente...</h2>
+      <div class="card pad">
+        <h3 style="margin-top:0" data-i18n="more-h3">Os iremos informando de más cosas a tener en cuenta cuando tengamos confirmaciones (alojamiento, desplazamiento, horarios)</h3>
+        <p data-i18n="more-p">¡Que nervios! ¡y que guay!</p>
+      </div>
     </div>
   </section>
 
   <footer>
-    Hecho con 🧡💜 por Paula & Eduardo · 31/10/2026
+    <span data-i18n="footer">Hecho con 🧡💜 por Paula &amp; Eduardo · 31/10/2026</span>
   </footer>
 
   <script>
-    // Smooth scroll (for browsers that need it)
+    // ─── Traducciones / Translations ─────────────────────────────────────────
+    const translations = {
+      es: {
+        'page-title':        'Boda Paula y Eduardo — Halloween',
+        'nav-countdown':     'Cuenta atrás',
+        'nav-video':         'Video',
+        'nav-venue':         'Lugar',
+        'nav-hotel':         'Hotel',
+        'nav-form':          'Formulario',
+        'nav-spotify':       'Spotify',
+        'nav-more':          'Más info',
+        'video-tag':         'SAVE THE DATE',
+        'video-h2':          '🎵 Guardad la fecha',
+        'hero-h1':           '🎃 Boda Paula y Eduardo 🎃',
+        'hero-p':            'Si has recibido este enlace... ¡Estás invitado a nuestra boda! ¡Os esperamos el <strong>31 de octubre de 2026</strong> para disfrutar todo el día!',
+        'countdown-tag':     'Cuenta atrás',
+        'countdown-h2':      '¡Queda muy poco! ⏳',
+        'countdown-days':    'Días',
+        'countdown-hours':   'Horas',
+        'countdown-minutes': 'Minutos',
+        'countdown-seconds': 'Segundos',
+        'venue-tag':         'Lugar',
+        'venue-h2':          '📍 Lugar de la celebración',
+        'venue-h3':          'Restaurante Molina Real Celebraciones',
+        'venue-address':     '<strong>Dirección: </strong><br/>C. Amsterdam, 2, 30509 Molina de Segura, Murcia',
+        'venue-ceremony':    'Hora de ceremonia civil: <strong>12:00</strong>',
+        'venue-cocktail':    'Hora de comienzo del cocktail: <strong>seguido de la ceremonia civil</strong> (se realiza en el mismo lugar que la ceremonia)',
+        'venue-maps-btn':    'Abrir en Google Maps',
+        'venue-map-title':   'Mapa del lugar',
+        'hotel-tag':         'Alojamiento',
+        'hotel-h2':          '🏨 Hotel recomendado',
+        'hotel-h3':          'Hotel El Churra — Murcia',
+        'hotel-intro':       'Hemos negociado condiciones especiales para los invitados:',
+        'hotel-room':        '🛏️ <strong style="color:var(--text)">65 €/noche</strong> — habitación doble',
+        'hotel-breakfast':   '☕ <strong style="color:var(--text)">+8 €/noche/persona</strong> — desayuno buffet incluido',
+        'hotel-parking':     '🅿️ <strong style="color:var(--text)">+19 €/noche</strong> — parking (si necesitáis)',
+        'hotel-note':        'Lo gestionamos nosotros con el hotel, escribidnos a nuestros wassaps.',
+        'hotel-maps-btn':    '📍 Ver en Google Maps',
+        'form-tag':          'Confirmación',
+        'form-h2':           '📋 Cuéntanos tus planes',
+        'form-desc':         'Rellena el formulario para confirmarnos asistencia, si necesitáis alojamiento, transporte y cualquier otra cosa que necesitemos saber.',
+        'form-btn':          '✍️ Rellenar formulario',
+        'spotify-tag':       'Música',
+        'spotify-h2':        '🎵 ¡Pon tu canción!',
+        'spotify-desc':      '¿Te apetece hacer una lista con nosotros? ¡Entra y añade las canciones que no pueden faltar en nuestra boda!',
+        'spotify-title':     '🎧 Bodorrio PyE — 31/10/26',
+        'spotify-btn':       '🎵 Abrir lista en Spotify',
+        'more-tag':          'Más info',
+        'more-h2':           'Próximamente...',
+        'more-h3':           'Os iremos informando de más cosas a tener en cuenta cuando tengamos confirmaciones (alojamiento, desplazamiento, horarios)',
+        'more-p':            '¡Que nervios! ¡y que guay!',
+        'footer':            'Hecho con 🧡💜 por Paula &amp; Eduardo · 31/10/2026',
+        'nav-gift': 'Cuenta Regalo',
+        'gift-tag': 'Cuenta Regalo',
+        'gift-h2': '🎁 Nuestra cuenta regalo',
+        'gift-text':
+          'Vuestra compañía es el mejor regalo, pero si queréis ayudarnos en esta nueva etapa, podéis hacerlo aquí.',
+        'gift-copy': 'Copiar IBAN',
+        'gift-thanks':
+          'Muchas gracias por formar parte de nuestro día.',
+        'gift-iban-label': 'Cuenta bancaria',
+      },
+      en: {
+        'page-title':        "Paula & Eduardo's Wedding — Halloween",
+        'nav-countdown':     'Countdown',
+        'nav-video':         'Video',
+        'nav-venue':         'Venue',
+        'nav-hotel':         'Hotel',
+        'nav-form':          'RSVP',
+        'nav-spotify':       'Spotify',
+        'nav-more':          'More info',
+        'video-tag':         'SAVE THE DATE',
+        'video-h2':          '🎵 Save the date',
+        'hero-h1':           "🎃 Paula & Eduardo's Wedding 🎃",
+        'hero-p':            "If you received this link... You're invited to our wedding! We can't wait to see you on <strong>October 31st, 2026</strong> for a full day of celebration!",
+        'countdown-tag':     'Countdown',
+        'countdown-h2':      'Coming up soon! ⏳',
+        'countdown-days':    'Days',
+        'countdown-hours':   'Hours',
+        'countdown-minutes': 'Minutes',
+        'countdown-seconds': 'Seconds',
+        'venue-tag':         'Venue',
+        'venue-h2':          '📍 Celebration Venue',
+        'venue-h3':          'Restaurante Molina Real Celebraciones',
+        'venue-address':     '<strong>Address: </strong><br/>C. Amsterdam, 2, 30509 Molina de Segura, Murcia',
+        'venue-ceremony':    'Civil ceremony: <strong>12:00</strong>',
+        'venue-cocktail':    'Cocktail hour: <strong>right after the ceremony</strong> (held at the same venue)',
+        'venue-maps-btn':    'Open in Google Maps',
+        'venue-map-title':   'Venue map',
+        'hotel-tag':         'Accommodation',
+        'hotel-h2':          '🏨 Recommended Hotel',
+        'hotel-h3':          'Hotel El Churra — Murcia',
+        'hotel-intro':       "We've arranged special rates for our guests:",
+        'hotel-room':        '🛏️ <strong style="color:var(--text)">€65/night</strong> — double room',
+        'hotel-breakfast':   '☕ <strong style="color:var(--text)">+€8/night/person</strong> — buffet breakfast included',
+        'hotel-parking':     '🅿️ <strong style="color:var(--text)">+€19/night</strong> — parking (if needed)',
+        'hotel-note':        "We'll handle the booking — just send us a WhatsApp message.",
+        'hotel-maps-btn':    '📍 View on Google Maps',
+        'form-tag':          'RSVP',
+        'form-h2':           '📋 Tell us your plans',
+        'form-desc':         'Please fill in the form to confirm your attendance, whether you need accommodation, transport, and anything else we should know.',
+        'form-btn':          '✍️ Fill in the form',
+        'spotify-tag':       'Music',
+        'spotify-h2':        '🎵 Add your song!',
+        'spotify-desc':      'Feel like building the playlist with us? Jump in and add the songs that must be played at our wedding!',
+        'spotify-title':     '🎧 Bodorrio PyE — 31/10/26',
+        'spotify-btn':       '🎵 Open playlist on Spotify',
+        'more-tag':          'More info',
+        'more-h2':           'Coming soon...',
+        'more-h3':           "We'll keep you posted on everything you need to know once we have confirmations (accommodation, transport, schedules)",
+        'more-p':            "So excited — this is going to be amazing!",
+        'footer':            'Made with 🧡💜 by Paula &amp; Eduardo · 31/10/2026',
+        'nav-gift': 'Wedding Gift',
+        'gift-tag': 'Wedding Gift',
+        'gift-h2': '🎁 Wedding gift',
+        'gift-text':
+          'Your presence is the greatest gift, but if you would like to contribute to our new adventure together, you can do so here.',
+        'gift-copy': 'Copy IBAN',
+        'gift-thanks':
+          'Thank you very much for being part of our special day.',
+        'gift-iban-label': 'Bank account',
+      }
+    };
+
+    // ─── Detect language from URL path (/es or /en) ───────────────────────────
+    function detectLanguage() {
+      const path   = window.location.pathname;
+      const params = new URLSearchParams(window.location.search);
+      if (/\/en(\/|$)/i.test(path) || params.get('lang') === 'en') return 'en';
+      if (/\/es(\/|$)/i.test(path) || params.get('lang') === 'es') return 'es';
+      return 'es'; // default: Spanish
+    }
+
+    // ─── Apply translations to the page ──────────────────────────────────────
+    function applyLanguage(lang) {
+      const t = translations[lang] || translations['es'];
+
+      // Update all [data-i18n] elements (innerHTML to support <strong>, <br>, etc.)
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key] !== undefined) el.innerHTML = t[key];
+      });
+
+      // Page title & html[lang] attribute
+      document.title = t['page-title'];
+      document.documentElement.lang = lang;
+
+      // Map iframe accessibility title
+      const mapIframe = document.getElementById('venue-map');
+      if (mapIframe) mapIframe.title = t['venue-map-title'];
+
+      // Language switcher: highlight the active button
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+    }
+
+    // ─── Switch language without page reload ──────────────────────────────────
+    function switchLang(e, lang) {
+      e.preventDefault();
+
+      history.pushState(
+        { lang },
+        '',
+        '?lang=' + lang
+      );
+
+      applyLanguage(lang);
+    }
+
+    // Handle browser back / forward navigation
+    window.addEventListener('popstate', () => applyLanguage(detectLanguage()));
+
+    // ─── Init on load ─────────────────────────────────────────────────────────
+    applyLanguage(detectLanguage());
+
+    // ─── Smooth scroll ────────────────────────────────────────────────────────
     document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', e => {
         const id = a.getAttribute('href');
@@ -345,52 +640,66 @@
       });
     });
 
-    // Countdown to Oct 31, 2026 00:00 local time (Spain timezone will be used by the browser)
-    const target = new Date(2026, 9, 31, 0, 0, 0); // month is 0-based -> 9 = October
+    // ─── Countdown to Oct 31, 2026 ────────────────────────────────────────────
+    const target = new Date(2026, 9, 31, 0, 0, 0);
     const $d = document.getElementById('d');
     const $h = document.getElementById('h');
     const $m = document.getElementById('m');
     const $s = document.getElementById('s');
 
-    function updateCountdown(){
-      const now = new Date();
-      let diff = target - now;
+    function updateCountdown() {
+      let diff = target - new Date();
       if (diff < 0) diff = 0;
-      const sec = Math.floor(diff / 1000) % 60;
-      const min = Math.floor(diff / (1000*60)) % 60;
-      const hrs = Math.floor(diff / (1000*60*60)) % 24;
-      const days = Math.floor(diff / (1000*60*60*24));
-      $d.textContent = String(days);
-      $h.textContent = String(hrs).padStart(2,'0');
-      $m.textContent = String(min).padStart(2,'0');
-      $s.textContent = String(sec).padStart(2,'0');
+      $d.textContent = String(Math.floor(diff / (1000*60*60*24)));
+      $h.textContent = String(Math.floor(diff / (1000*60*60)) % 24).padStart(2,'0');
+      $m.textContent = String(Math.floor(diff / (1000*60)) % 60).padStart(2,'0');
+      $s.textContent = String(Math.floor(diff / 1000) % 60).padStart(2,'0');
     }
     updateCountdown();
     setInterval(updateCountdown, 1000);
 
-    // Copy IBAN
-    /*document.getElementById('copyIban').addEventListener('click', async () => {
-      const txt = document.getElementById('iban').textContent.replace(/\s+/g,' ').trim();
-      try { await navigator.clipboard.writeText(txt); 
-        const b = document.getElementById('copyIban');
-        b.textContent = '¡Copiado!';
-        setTimeout(() => b.textContent = 'Copiar', 1600);
-      } catch(e) { alert('No se pudo copiar. Copia manualmente, por favor.'); }
-    });*/
-
-    // Generate floating pumpkins & skulls
+    // ─── Floating Halloween emojis ────────────────────────────────────────────
     const emojis = ['🎃','💀','🕸️','🦇','🕯️'];
     const floaters = document.getElementById('floaters');
-    for (let i=0;i<40;i++){
+    for (let i = 0; i < 40; i++) {
       const span = document.createElement('span');
       span.className = 'floater';
-      span.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-      span.style.left = Math.random()*100 + 'vw';
+      span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      span.style.left   = Math.random() * 100 + 'vw';
       span.style.bottom = '-40px';
-      span.style.setProperty('--dur', (4 + Math.random()*4) + 's'); // rápido
-      span.style.fontSize = (20 + Math.random()*26) + 'px';
-      span.style.opacity = (0.5 + Math.random()*0.5).toFixed(2);
+      span.style.setProperty('--dur', (4 + Math.random() * 4) + 's');
+      span.style.fontSize = (20 + Math.random() * 26) + 'px';
+      span.style.opacity  = (0.5 + Math.random() * 0.5).toFixed(2);
       floaters.appendChild(span);
+    }
+
+    const copyBtn = document.getElementById('copyIban');
+
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async () => {
+        const iban = document.getElementById('iban').textContent.trim();
+
+        try {
+          await navigator.clipboard.writeText(iban);
+
+          const lang = document.documentElement.lang;
+
+          copyBtn.textContent =
+            lang === 'en' ? 'Copied!' : '¡Copiado!';
+
+          setTimeout(() => {
+            copyBtn.textContent =
+              translations[lang]['gift-copy'];
+          }, 2000);
+
+        } catch {
+          alert(
+            document.documentElement.lang === 'en'
+              ? 'Unable to copy the IBAN.'
+              : 'No se pudo copiar el IBAN.'
+          );
+        }
+      });
     }
   </script>
 </body>
